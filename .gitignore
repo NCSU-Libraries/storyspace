@@ -1,3 +1,29 @@
+
+
+# Ignore media files
+/media/audio/**
+!/media/audio/.keep
+!/media/audio/demo
+!/media/audio/demo/**
+
+/media/video/**
+!/media/video/.keep
+
+/media/images/**
+!/media/images/.keep
+!/media/images/curtains.png
+!/media/audio/demo
+!/media/images/demo/**
+!/media/images/readme
+!/media/images/readme/**
+
+# ignore zips
+/**/*.zip
+/*.zip
+
+# ignore custom zip scripts
+/zip_*.sh
+
 # Ignore all logfiles and tempfiles. and work files
 /log/*
 /tmp/*
@@ -6,24 +32,3 @@
 .DS_Store
 **/.DS_Store
 _*
-
-# Ignore media files
-/media/audio/**
-!/media/audio/.keep
-!/media/audio/demo/**
-
-/media/video/**
-!/media/video/.keep
-/media/images/*
-!/media/images/.keep
-!/media/images/curtains.png
-!/media/images/demo/**
-!media/images/readme
-!media/images/readme/**
-
-# ignore zips
-/**/*.zip
-/*.zip
-
-# ignore custom zip scripts
-/zip_*.sh
