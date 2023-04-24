@@ -1,2 +1,2 @@
-# visualization_story
+# StorySpace
 A framework for visual storytelling in immersive visualization spaces
