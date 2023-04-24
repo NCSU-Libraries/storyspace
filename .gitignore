@@ -1,18 +1,29 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# Ignore all logfiles and tempfiles. and work files
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+.DS_Store
+**/.DS_Store
+_*
 
-# Other files and folders
-.settings/
+# Ignore media files
+/media/audio/**
+!/media/audio/.keep
+!/media/audio/demo
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+/media/video/**
+!/media/video/.keep
+/media/images/**
+!/media/images/.keep
+!/media/images/curtains.png
+!/media/images/demo
+!media/images/readme
+!media/images/readme/**
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# ignore zips
+/**/*.zip
+/*.zip
+
+# ignore custom zip scripts
+/zip_*.sh

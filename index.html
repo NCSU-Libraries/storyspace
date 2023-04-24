@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+  <title>Storyspace demo</title>
+  <link  rel="stylesheet" type="text/css" href="css/visualization_gallery.css"/>
+  <link  rel="stylesheet" type="text/css" href="css/storyspace.css"/>
+</head>
+
+
+<body>
+  <!-- DO NOT EDIT THIS SECTION -->
+  <!-- #storyspace is parent elment for all visible content -->
+  <div id="storyspace" class="visualization-gallery">
+  </div>
+  <!-- END -- DO NOT EDIT THIS SECTION -->
+
+
+  <!-- #audio contains audio elements when needed, not visible -->
+  <div id="master-audio"></div>
+
+   <!-- Load utility functions first - these are used by core JS but adding them here makes them available to callbacks in custom JS -->
+  <script type="text/javascript" src="js/utils.js"></script>
+  <!-- Load custom JS here if applicable -->
+  <!-- Load core presentation Javascript -->
+  <script type="text/javascript" src="js/slideshow.js"></script>
+  <script type="text/javascript" src="js/storyspace.js"></script>
+  <!-- Load presentation config -->
+  <script type="text/javascript" src="js/config_storytest.js"></script>
+  <script type="text/javascript" src="js/transform_scale.js"></script>
+
+
+  <!-- initialize the presentation, passing in the configuration defined in config.js -->
+  <script>
+    new Storyspace('#storyspace', config());
+  </script>
+
+</body>
+
+</html>

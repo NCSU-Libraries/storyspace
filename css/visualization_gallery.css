@@ -1,0 +1,482 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: black;
+  width: 15360px; 
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -7680px;
+  margin-top: -540px;
+  padding:  0;
+  font-size:  40px;
+  font-family: sans-serif;
+}
+
+.visualization-gallery,
+main.visualization-gallery {
+  width: 100%;
+  height: 1080px;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  display: block;
+  position: relative;
+}
+
+
+.zone {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 1080px;
+}
+
+.zone-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1080px;
+  margin: 0;
+  padding: 0;
+  background: black; 
+}
+
+.zone .wrapper {
+  padding:  0;
+}
+
+.zone .wrapper img,
+.zone .wrapper video {
+  height: 1080px;
+}
+
+.zone .wrapper img.vertical {
+  height: 100%;
+}
+
+.zone .wrapper img.horizontal {
+  width: 100%;
+}
+
+
+.zone .wrapper.padded {
+  padding:  100px;
+}
+
+
+/* Default 12-zone layout */
+
+.zone {
+  width: 1280px;
+}
+
+/* position classes */
+
+.zone.zone-1,
+.zone.full {
+  left: 0;
+}
+
+.zone.zone-2  {
+  left: 1280px;
+}
+
+.zone.zone-3  {
+  left: 2560px;
+}
+
+.zone.zone-4  {
+  left: 3840px;
+}
+
+.zone.zone-5  {
+  left: 5120px;
+}
+
+.zone.zone-6  {
+  left: 6400px;
+}
+
+.zone.zone-7  {
+  left: 7680px;
+}
+
+.zone.zone-8  {
+  left: 8960px;
+}
+
+.zone.zone-9  {
+  left: 10240px;
+}
+
+.zone.zone-10  {
+  left: 11520px;
+}
+
+.zone.zone-11  {
+  left: 12800px;
+}
+
+.zone.zone-12  {
+  left: 14080px;
+}
+
+/* span classes */
+
+.zone:first-child.full,
+.zone.zone-1.span-12,
+.zone.zone-1.full,
+.zone.full {
+  width: 15360px;
+}
+
+.zone.span-11,
+.zone.zone-2.span-12 {
+  width: 14080px;
+}
+
+.zone.span-10,
+.zone.zone-3.span-11,
+.zone.zone-3.span-12 {
+  width: 12800px;
+}
+
+.zone.span-9,
+.zone.zone-4.span-10,
+.zone.zone-4.span-11,
+.zone.zone-4.span-12 {
+  width: 11520px;
+}
+
+.zone.span-8,
+.zone.zone-5.span-9,
+.zone.zone-5.span-10,
+.zone.zone-5.span-11,
+.zone.zone-5.span-12 {
+  width: 10240px;
+}
+
+.zone.span-7,
+.zone.zone-6.span-8,
+.zone.zone-6.span-9,
+.zone.zone-6.span-10,
+.zone.zone-6.span-11,
+.zone.zone-6.span-12 {
+  width: 8960px;
+}
+
+.zone.span-6,
+.zone.zone-7.span-7,
+.zone.zone-7.span-8,
+.zone.zone-7.span-9,
+.zone.zone-7.span-10,
+.zone.zone-7.span-11,
+.zone.zone-7.span-12 {
+  width: 7680px;
+}
+
+.zone.span-5,
+.zone.zone-8.span-6,
+.zone.zone-8.span-7,
+.zone.zone-8.span-8,
+.zone.zone-8.span-9,
+.zone.zone-8.span-10,
+.zone.zone-8.span-11,
+.zone.zone-8.span-12 {
+  width: 6400px;
+}
+
+.zone.span-4,
+.zone.zone-9.span-5,
+.zone.zone-9.span-6,
+.zone.zone-9.span-7,
+.zone.zone-9.span-8,
+.zone.zone-9.span-9,
+.zone.zone-9.span-10,
+.zone.zone-9.span-11,
+.zone.zone-9.span-12 {
+  width: 5120px;
+}
+
+.zone.span-3,
+.zone.zone-10.span-4,
+.zone.zone-10.span-5,
+.zone.zone-10.span-6,
+.zone.zone-10.span-7,
+.zone.zone-10.span-8,
+.zone.zone-10.span-9,
+.zone.zone-10.span-10,
+.zone.zone-10.span-11,
+.zone.zone-10.span-12 {
+  width: 3840px;
+}
+
+.zone.span-2,
+.zone.zone-11.span-3,
+.zone.zone-11.span-4,
+.zone.zone-11.span-5,
+.zone.zone-11.span-6,
+.zone.zone-11.span-7,
+.zone.zone-11.span-8,
+.zone.zone-11.span-9,
+.zone.zone-11.span-10,
+.zone.zone-11.span-11,
+.zone.zone-11.span-12 {
+  width: 2560px;
+}
+
+.zone.zone-12.span-2,
+.zone.zone-12.span-3,
+.zone.zone-12.span-4,
+.zone.zone-12.span-5,
+.zone.zone-12.span-6,
+.zone.zone-12.span-7,
+.zone.zone-12.span-8,
+.zone.zone-12.span-9,
+.zone.zone-12.span-10,
+.zone.zone-12.span-11,
+.zone.zone-12.span-12 {
+  width: 1280px;
+}
+
+
+/** 8-zone grid **/
+
+.grid-8 .zone {
+  width: 1920px;
+}
+
+/* grid-8 position classes */
+
+.grid-8 .zone.zone-1 {
+  left: 0;
+}
+
+.grid-8 .zone.zone-2  {
+  left: 1920px;
+}
+
+.grid-8 .zone.zone-3  {
+  left: 3840px;
+}
+
+.grid-8 .zone.zone-4  {
+  left: 5760px;
+}
+
+.grid-8 .zone.zone-5  {
+  left: 7680px;
+}
+
+.grid-8 .zone.zone-6  {
+  left: 9600px;
+}
+
+.grid-8 .zone.zone-7  {
+  left: 11520px;
+}
+
+.grid-8 .zone.zone-8  {
+  left: 13440px;
+}
+
+/* grid-8 span classes */
+
+.grid-8 .zone.zone-1.span-8 {
+  width: 15360px;
+}
+
+.grid-8 .zone.span-7,
+.grid-8 .zone.zone-2.span-8 {
+  width: 13440px;
+}
+
+.grid-8 .zone.span-6,
+.grid-8 .zone.zone-3.span-7,
+.grid-8 .zone.zone-3.span-8 {
+  width: 11520px;
+}
+
+.grid-8 .zone.span-5,
+.grid-8 .zone.zone-4.span-6,
+.grid-8 .zone.zone-4.span-7,
+.grid-8 .zone.zone-4.span-8 {
+  width: 9600px;
+}
+
+.grid-8 .zone.span-4,
+.grid-8 .zone.zone-5.span-5,
+.grid-8 .zone.zone-5.span-6,
+.grid-8 .zone.zone-5.span-7,
+.grid-8 .zone.zone-5.span-8 {
+  width: 7680px;
+}
+
+.grid-8 .zone.span-3,
+.grid-8 .zone.zone-6.span-4,
+.grid-8 .zone.zone-6.span-5,
+.grid-8 .zone.zone-6.span-6,
+.grid-8 .zone.zone-6.span-7,
+.grid-8 .zone.zone-6.span-8 {
+  width: 5760px;
+}
+
+.grid-8 .zone.span-2,
+.grid-8 .zone.zone-7.span-3,
+.grid-8 .zone.zone-7.span-4,
+.grid-8 .zone.zone-7.span-6,
+.grid-8 .zone.zone-7.span-7,
+.grid-8 .zone.zone-7.span-8 {
+  width: 3840px;
+}
+
+
+/** 10-zone grid **/
+
+.grid-10 .zone {
+  width: 1536px;
+}
+
+/* grid-10 position classes */
+
+.grid-10 .zone.zone-1 {
+  left: 0;
+}
+
+.grid-10 .zone.zone-2  {
+  left: 1536px;
+}
+
+.grid-10 .zone.zone-3  {
+  left: 3072px;
+}
+
+.grid-10 .zone.zone-4  {
+  left: 4608px;
+}
+
+.grid-10 .zone.zone-5  {
+  left: 6144px;
+}
+
+.grid-10 .zone.zone-6  {
+  left: 7680px;
+}
+
+.grid-10 .zone.zone-7  {
+  left: 9216px;
+}
+
+.grid-10 .zone.zone-8  {
+  left: 10752px;
+}
+
+.grid-10 .zone.zone-9  {
+  left: 12288px;
+}
+
+.grid-10 .zone.zone-10  {
+  left: 13824px;
+}
+
+/* grid-10 span classes */
+
+.grid-10 .zone.zone-1.span-10 {
+  width: 15360px;
+}
+
+.grid-10 .zone.span-9,
+.grid-10 .zone.zone-2.span-10 {
+  width: 13824px;
+}
+
+.grid-10 .zone.span-8,
+.grid-10 .zone.zone-3.span-9,
+.grid-10 .zone.zone-3.span-10 {
+  width: 12288px;
+}
+
+.grid-10 .zone.span-7,
+.grid-10 .zone.zone-4.span-8,
+.grid-10 .zone.zone-3.span-9,
+.grid-10 .zone.zone-4.span-10 {
+  width: 10752px;
+}
+
+.grid-10 .zone.span-6,
+.grid-10 .zone.zone-5.span-7,
+.grid-10 .zone.zone-5.span-8,
+.grid-10 .zone.zone-5.span-9,
+.grid-10 .zone.zone-5.span-10 {
+  width: 9216px;
+}
+
+.grid-10 .zone.span-5,
+.grid-10 .zone.zone-6.span-6,
+.grid-10 .zone.zone-6.span-7,
+.grid-10 .zone.zone-6.span-8,
+.grid-10 .zone.zone-6.span-9,
+.grid-10 .zone.zone-6.span-10 {
+  width: 7680px;
+}
+
+.grid-10 .zone.span-4,
+.grid-10 .zone.zone-7.span-5,
+.grid-10 .zone.zone-7.span-6,
+.grid-10 .zone.zone-7.span-7,
+.grid-10 .zone.zone-7.span-8,
+.grid-10 .zone.zone-7.span-9,
+.grid-10 .zone.zone-7.span-10 {
+  width: 6144px;
+}
+
+.grid-10 .zone.span-3,
+.grid-10 .zone.zone-8.span-4,
+.grid-10 .zone.zone-8.span-5,
+.grid-10 .zone.zone-8.span-6,
+.grid-10 .zone.zone-8.span-7,
+.grid-10 .zone.zone-8.span-8,
+.grid-10 .zone.zone-8.span-9,
+.grid-10 .zone.zone-8.span-10 {
+  width: 4608px;
+}
+
+.grid-10 .zone.span-2,
+.grid-10 .zone.zone-9.span-3,
+.grid-10 .zone.zone-9.span-4,
+.grid-10 .zone.zone-9.span-5,
+.grid-10 .zone.zone-9.span-6,
+.grid-10 .zone.zone-9.span-7,
+.grid-10 .zone.zone-9.span-8,
+.grid-10 .zone.zone-9.span-9,
+.grid-10 .zone.zone-9.span-10 {
+  width: 3072px;
+}
+
+.grid-10 .zone.zone-10.span-2,
+.grid-10 .zone.zone-10.span-3,
+.grid-10 .zone.zone-10.span-4,
+.grid-10 .zone.zone-10.span-5,
+.grid-10 .zone.zone-10.span-6,
+.grid-10 .zone.zone-10.span-7,
+.grid-10 .zone.zone-10.span-8,
+.grid-10 .zone.zone-10.span-9,
+.grid-10 .zone.zone-10.span-10 {
+  width: 1536px;
+}
+
+
+/** Utilities **/
+
+.hidden {
+  display: none;
+}

@@ -1,0 +1,182 @@
+
+
+
+/* Zone definitions, etc. */
+
+#storyspace {
+  background:  url('../media/images/default.png') repeat-x;
+}
+
+.zone-wrapper {
+  width: 100%;
+  height: 1080px;
+  margin:  0;
+  padding: 0;
+  position:  absolute;
+  top:  0;
+  left:  0;
+  background:  black;
+}
+
+.zone .zone-default {
+  background:  url('../media/images/default_span2.png');
+  height:  1080px;
+  width:  100%;
+}
+
+/* Additional styles used for media players, images, and wrapper elements */
+
+.zone > .wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.zone > .wrapper img.vertical {
+  height: 100%;
+}
+
+.zone > .wrapper img, .zone > .wrapper video {
+  height: 1080px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  
+  transform: translate(-50%,-50%);
+  /* or 3d alternative if you will add animations (smoother transitions) */
+  transform: translate3d(-50%,-50%,0);
+}
+
+.zone > .wrapper img.horizontal {
+  width: 100%;
+}
+
+.zone > .wrapper p {
+  line-height: 1em;
+  margin:  0;
+  padding:  0;
+  font-size:  175px;
+  color:  #fff;
+  font-family: sans-serif;
+  font-weight: bold;
+  opacity: 0.6;
+  width:  100%;
+  text-align:  center;
+  position:  absolute;
+  top: 35%;
+  left:  0;
+}
+
+.zone > .wrapper .label {
+  position:  absolute;
+  top: 60%;
+  left:  0;
+  text-align:  center;
+  font-size:  70px;
+  line-height: 2em;
+  z-index:  100;
+  width:  100%;
+  opacity: 0.4;
+  font-family: monospace;
+}
+
+
+.zone > .wrapper .caption {
+  position:  absolute;
+  bottom:  0;
+  left:  0;
+  font-size:  24px;
+  line-height: 1.1em;
+  z-index:  100;
+  width:  100%;
+  padding: 10px 0 20px 0;
+  text-align:  center;
+}
+
+
+.zone > .wrapper.with-caption .content {
+  position: relative;
+  width: 100%;
+  height: 950px;
+}
+
+
+.controls {
+  clear: both;
+  text-align: center;
+}
+
+.test-red {
+  width: 100%;
+  height: 100%;
+  background: #990000;
+}
+
+.test-green {
+  width: 100%;
+  height: 100%;
+  background: #009900;
+}
+
+.test-blue {
+  width: 100%;
+  height: 100%;
+  background: #000099;
+}
+
+.playlist-control {
+  font-size: 50px;
+  color: #333;
+}
+
+.playlist-control:hover {
+  cursor: pointer;
+}
+
+.playlist-link {
+  color: #333;
+}
+
+.playlist-link:hover {
+  color: #666;
+}
+
+.playlist-link.current, .playlist-link.current:hover {
+  color: #666;
+}
+
+.to-fade-in {
+  opacity:  0;
+}
+
+
+
+#slideSource {
+  opacity: 1;
+  transition: opacity 1s; 
+}
+
+#slideSource.fade {
+  opacity: 0;
+}
+
+
+/* transitions */
+
+.to-fade-in {
+  opacity:  0;
+}
+
+.fade-in {
+  transition: opacity 2s ease-out; /* It slowly shows the element as we place the mouse on the box and when the time reaches 2 seconds, it is fully visible. */  
+  -webkit-transition: opacity 2s ease-out;  
+  -moz-transition: opacity 2s ease-in-out;
+  opacity:  1;
+}
+
+.fade-in-complete {
+  opacity: 1;
+}
