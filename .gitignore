@@ -10,14 +10,14 @@ _*
 # Ignore media files
 /media/audio/**
 !/media/audio/.keep
-!/media/audio/demo
+!/media/audio/demo/**
 
 /media/video/**
 !/media/video/.keep
-/media/images/**
+/media/images/*
 !/media/images/.keep
 !/media/images/curtains.png
-!/media/images/demo
+!/media/images/demo/**
 !media/images/readme
 !media/images/readme/**
 
