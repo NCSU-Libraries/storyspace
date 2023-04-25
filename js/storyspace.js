@@ -47,7 +47,6 @@ Storyspace.prototype.initialize = function() {
   this.initializeZoneWrappers();
   this.initializeScenes();
   this.enableKeyboardConrol();
-  console.log(this.masterAudio);
 }
 
 
@@ -57,9 +56,7 @@ Storyspace.prototype.restart = function() {
 }
 
 
-
 Storyspace.prototype.setDefaults = function() {
-  this.storyMode = this.config.storyMode || false;
   this.started = false;
   this.transitioning = false;
   this.sceneIndex = 0;
@@ -67,7 +64,7 @@ Storyspace.prototype.setDefaults = function() {
   this.zoneWrapperNextIndex = 1;
   this.grids = [12,10,8];
   this.defaultGrid = this.config.defaultGrid || null; // null default will use 12-zone grid
-  this.loopMedia = (this.config.loopMedia !== false) ? true : false
+  this.loopMedia = (this.config.loopMedia !== false) ? true : false;
   this.queuedSlideshows = [];
   if (this.config.transitionInterval === 0) {
     this.transitionInterval = 0;
@@ -75,27 +72,28 @@ Storyspace.prototype.setDefaults = function() {
   else {
     this.transitionInterval = this.config.transitionInterval || 1000;
   }
-  if (this.storyMode) {
-    this.initializeStoryMode();
+
+  let minGap = this.transitionInterval / 1000;
+
+  if (this.config.gapTime && this.config.gapTime >= minGap) {
+    this.gapTime = this.config.gapTime
   }
-  this.scenes = this.config.scenes;
-  this.processStoryModeScenes();
+  else {
+    this.gapTime = 2;
+  }
+
+  this.fadeColor = this.config.fadeColor || '#000000'
+
+  this.initializeMainAudio();
+  
+  // deep copy config.scenes to this.scenes
+  this.scenes = [];
+  for (const scene of this.config.scenes) {
+    this.scenes.push(scene);
+  }
+
+  this.processScenes();
   // console.log(this.scenes);
-}
-
-
-// Story controls (storyMode == true)
-
-Storyspace.prototype.initializeStoryMode = function() {
-  this.masterAudio = null;
-
-  if (this.config.masterAudioFilePath) {
-    this.masterAudioWrapper = document.querySelector("#master-audio");
-    let audioElementHtml = '<audio src="' + this.config.masterAudioFilePath + '" class="paused">';
-    this.masterAudio = htmlToElement(audioElementHtml);
-    this.masterAudio.id = this.config.masterAudioId || 'master-audio-element';
-    this.masterAudioWrapper.appendChild(this.masterAudio);
-  }
 }
 
 
@@ -110,10 +108,22 @@ Storyspace.prototype.setRootStyles = function() {
 }
 
 
-Storyspace.prototype.initializeZoneWrappers = function() {
-  // Delete everything in this.root
-  removeAllChildNodes(this.root);
+Storyspace.prototype.initializeMainAudio = function() {
+  this.mainAudio = null;
 
+  if (this.config.audioFilePath) {
+    this.mainAudioWrapper = document.querySelector("#main-audio");
+    let audioElementHtml = '<audio src="' + this.config.audioFilePath + '" class="paused">';
+    this.mainAudio = htmlToElement(audioElementHtml);
+    this.mainAudio.id = this.config.mainAudioId || 'main-audio-element';
+    this.mainAudioWrapper.appendChild(this.mainAudio);
+  }
+}
+
+
+Storyspace.prototype.initializeZoneWrappers = function() {
+  // Delete everything in this.root first
+  removeAllChildNodes(this.root);
   this.zoneWrappers = this.root.querySelectorAll('.zone-wrapper');
   this.zoneWrapperTop = htmlToElement('<div class="zone-wrapper to-fade-in" id="zone-wrapper-1"></div>');
   this.zoneWrapperNext = htmlToElement('<div class="zone-wrapper to-fade-in" id="zone-wrapper-2"></div>');
@@ -137,7 +147,7 @@ Storyspace.prototype.initializeScenes = function() {
 }
 
 
-Storyspace.prototype.processStoryModeScenes = function() {
+Storyspace.prototype.processScenes = function() {
   this.scenes.forEach(function(scene) {
     if (!scene.startTime) {
       scene.startTime = 0;
@@ -154,16 +164,19 @@ Storyspace.prototype.processStoryModeScenes = function() {
     let thisScene = this.scenes[i];
     let nextScene = this.scenes[i + 1];
     thisScene.autoAdvanceMediaTime = nextScene ? nextScene.startTime : null;
-    thisScene.autoAdvanceMediaId = this.masterAudio.id;
+    thisScene.autoAdvanceMediaId = this.mainAudio.id;
   }
 
-  this.scenes.forEach(function(scene) {
-    if (!scene.startTime) {
-      scene.startTime = 0;
-    }
-  });
+  // add blank scene at end
+  let tailScene = {
+    layout: [
+      { zone: 1, span: 12, contentType: 'html', content: '<div></div>'}
+    ],
+    backgroundColor: this.fadeColor,
+    autoAdvanceTime: this.gapTime
+  }
 
-  // this.scenes = newScenes;
+  this.scenes.push(tailScene);
 }
 
 
@@ -173,10 +186,10 @@ Storyspace.prototype.incrementSceneIndex = function() {
   // this.sceneIndex = increment(this.sceneIndex, this.scenes.length - 1);
   this.sceneIndex = this.sceneIndex + 1;
   if (this.sceneIndex >= this.scenes.length) {
+    // setting this.sceneIndex = null here triggers restart at the end of the story
     this.sceneIndex = null;
   }
   console.log(this.sceneIndex);
-  // this.restartOnAdvance = (this.sceneIndex === 0) ? true : false;
 }
 
 
@@ -221,13 +234,14 @@ Storyspace.prototype.start = function() {
     top.classList.remove('to-fade-in');
     _this.transitioning = false;
     _this.checkElementAutoAdvance(top);
+    _this.root.style.background = _this.fadeColor;
   });
 
   this.startQueuedSlideshows();
   
-  if (this.masterAudio) {
-    // console.log(this.masterAudio);
-    this.playPause(this.masterAudio);
+  if (this.mainAudio) {
+    // console.log(this.mainAudio);
+    this.playPause(this.mainAudio);
   }
 
   this.started = true;
@@ -256,7 +270,6 @@ Storyspace.prototype.advance = function(options) {
    transitionInterval = this.nextScene.transitionInterval;
   }
 
-  // // this.loadContent(this.zoneWrapperNext);
   this.zoneWrapperNext.style.opacity = 0;
   this.zoneWrapperNext.style.zIndex = 1000;
   this.zoneWrapperTop.style.zIndex = 0;
@@ -271,18 +284,17 @@ Storyspace.prototype.advance = function(options) {
       clearInterval(this.mediaTimeAdvanceInterval);
     }
 
-    if (this.masterAudio && this.nextScene.startTime) {
-      this.masterAudio.currentTime = this.nextScene.startTime;
+    if (this.mainAudio && this.nextScene.startTime) {
+      this.mainAudio.currentTime = this.nextScene.startTime;
     }
-    // For storyMode only, advance master audio to start time specified in this.nextScne
   }
 
   let currentSceneIndex = modulo(this.sceneIndex - 1, this.scenes.length);
 
-  if (this.storyMode && currentSceneIndex == 0) {
-    pause(this.masterAudio);
-    this.masterAudio.currentTime = 0;
-    play(this.masterAudio);
+  if (currentSceneIndex == 0) {
+    pause(this.mainAudio);
+    this.mainAudio.currentTime = 0;
+    play(this.mainAudio);
   }
 
   fadeIn(this.zoneWrapperNext, transitionInterval, function() {
@@ -309,9 +321,6 @@ Storyspace.prototype.advance = function(options) {
 }
 
 
-
-
-
 Storyspace.prototype.reverse = function() {
   console.log('reverse');
   this.loadPrev();
@@ -319,10 +328,11 @@ Storyspace.prototype.reverse = function() {
 }
 
 
-// TODO - CONSIDER adding ability to disable with the same function
 Storyspace.prototype.enableKeyboardConrol = function() {
   var _this = this;
-  document.addEventListener('keydown', function(event) {
+
+  var keyboardControlMapping = function(event) {
+    // var _this = this;
     var keyCode = event.keyCode;
     // s for start
     if (!_this.started) {
@@ -333,6 +343,7 @@ Storyspace.prototype.enableKeyboardConrol = function() {
         // spacebar
         case 32:
           _this.playPause();
+          console.log('spacebar');
           break;
         // n
         case 78:
@@ -356,8 +367,10 @@ Storyspace.prototype.enableKeyboardConrol = function() {
           break;
       }
     }
-    
-  });
+  }
+
+  document.removeEventListener('keydown', keyboardControlMapping);
+  document.addEventListener('keydown', keyboardControlMapping);
 }
 
 
@@ -415,8 +428,6 @@ Storyspace.prototype.initializeLayout = function(zoneWrapper, scene) {
 }
 
 Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
-  // console.log(scene);
-
   var layout = scene.layout;
   layout = layout.sort(function(a,b) { return a.zone - b.zone });
   
@@ -440,9 +451,7 @@ Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
 
   for (var i = 0; i < layout.length; i++) {
     var zoneConf = layout[i];
-    
     zoneConf.loop ||= this.loopMedia;
-
     var zoneId = "zone-" + zoneConf.zone;
     var zoneSelector = '.zone.' + zoneId;
     var zone = zoneWrapper.querySelector(zoneSelector);
@@ -515,8 +524,6 @@ Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
       }
     }
   }
-
-  // console.log(scene.callback);
 }
 
 
@@ -537,13 +544,7 @@ Storyspace.prototype.checkElementAutoAdvance = function(element) {
   else if (element.hasAttribute('data-auto-advance-media-id')) {
     let mediaObject;
 
-    if (this.storyMode) {
-      mediaObject = this.masterAudio;
-    }
-    else {
-      let selector = '#' + element.getAttribute('data-auto-advance-media-id');
-      mediaObject = document.querySelector(selector);
-    }
+    mediaObject = this.mainAudio;
 
     if (mediaObject) {
       if (element.hasAttribute('data-auto-advance-media-time')) {
@@ -598,9 +599,7 @@ Storyspace.prototype.intervalAdvance = function(interval) {
 Storyspace.prototype.mediaAdvance = function(mediaObject) {
   var _this = this;
   mediaObject.addEventListener('ended', function() {
-    if (_this.storyMode) {
-      this.classList.add('paused');
-    }
+    this.classList.add('paused');
     _this.advanceOrRestart();
   });
 }
@@ -615,8 +614,6 @@ Storyspace.prototype.loadVideo = function(wrapper, src) {
 
 
 Storyspace.prototype.loadImage = function(wrapper, src) {
-  // console.log(wrapper);
-
   var img = wrapper.querySelector('img');
   img.src = src;
 }
@@ -642,6 +639,9 @@ Storyspace.prototype.startQueuedSlideshows = function() {
 
 Storyspace.prototype.playPause = function(element) {
   var players;
+  
+  console.log('playPause. element:');
+  console.log(element ? element : 'NULL');
 
   if (element) {
 
@@ -657,15 +657,12 @@ Storyspace.prototype.playPause = function(element) {
   else {
     players = this.zoneWrapperTop.querySelectorAll('video,audio');
     players = Array.prototype.slice.call(players);
-    if (this.masterAudio) {
-      players.push(this.masterAudio);
+    if (this.mainAudio) {
+      players.push(this.mainAudio);
     }
   }
 
-  // console.log(players);
-
   players.forEach(function(player) {
-    // console.log(player);
     playPause(player);
   });
 }
