@@ -13,7 +13,7 @@
 
 /media/images/**
 !/media/images/.keep
-!/media/images/curtains.png
+!/media/images/default.png
 !/media/images/demo/**
 !/media/images/readme
 !/media/images/readme/**
