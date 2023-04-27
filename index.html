@@ -13,22 +13,20 @@
 <body>
   <!-- DO NOT EDIT THIS SECTION -->
   <!-- #storyspace is parent elment for all visible content -->
-  <div id="storyspace" class="visualization-gallery">
-  </div>
+  <div id="storyspace" class="visualization-gallery"></div>
   <!-- END -- DO NOT EDIT THIS SECTION -->
 
 
   <!-- #audio contains audio elements when needed, not visible -->
   <div id="main-audio"></div>
 
-   <!-- Load utility functions first - these are used by core JS but adding them here makes them available to callbacks in custom JS -->
+  <!-- Load utility functions first - these are used by core JS but adding them here makes them available to callbacks in custom JS -->
   <script type="text/javascript" src="js/utils.js"></script>
-  <!-- Load custom JS here if applicable -->
-  <!-- Load core presentation Javascript -->
-  <script type="text/javascript" src="js/slideshow.js"></script>
+  <!-- Load core Javascript -->
   <script type="text/javascript" src="js/storyspace.js"></script>
   <!-- Load presentation config -->
-  <script type="text/javascript" src="js/config_storytest.js"></script>
+  <script type="text/javascript" src="js/config.js"></script>
+  <!-- Load transform_scale to fit content on smaller displays for development -->
   <script type="text/javascript" src="js/transform_scale.js"></script>
 
 

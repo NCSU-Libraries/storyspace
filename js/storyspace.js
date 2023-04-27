@@ -66,6 +66,7 @@ Storyspace.prototype.setDefaults = function() {
   this.defaultGrid = this.config.defaultGrid || null; // null default will use 12-zone grid
   this.loopMedia = (this.config.loopMedia !== false) ? true : false;
   this.queuedSlideshows = [];
+  this.backgroundColor = this.config.backgroundColor || '#000';
   if (this.config.transitionInterval === 0) {
     this.transitionInterval = 0;
   }
@@ -93,18 +94,6 @@ Storyspace.prototype.setDefaults = function() {
   }
 
   this.processScenes();
-  // console.log(this.scenes);
-}
-
-
-Storyspace.prototype.setRootStyles = function() {
-  // if (this.config.backgroundColor) {
-  //   this.root.style.background = this.config.backgroundColor;
-  // }
-
-  if (this.config.fontColor) {
-    this.root.style.color = this.config.fontColor;
-  }
 }
 
 
@@ -121,10 +110,68 @@ Storyspace.prototype.initializeMainAudio = function() {
 }
 
 
+Storyspace.prototype.processScenes = function() {
+  this.scenes.forEach(function(scene) {
+    if (!scene.startTime) {
+      scene.startTime = 0;
+    }
+  });
+
+  function sceneSort(a, b) {
+    return a.startTime - b.startTime;
+  }
+
+  this.scenes = this.scenes.sort(sceneSort);
+
+  for (let i = 0; i < this.scenes.length; i++) {
+    let thisScene = this.scenes[i];
+    let nextScene = (i == this.scenes.length - 1) ? null : this.scenes[i + 1];
+    let prevScene = (i == 0) ? null : this.scenes[i - 1];
+
+    // add grid
+    if (!thisScene.grid) {
+      thisScene.grid = this.defaultGrid;
+    }
+
+    // check modScenes
+    if (thisScene.modScene) {
+      // unser modScene of first scene or grids do not match
+      if (!prevScene || thisScene.grid != prevScene.grid) {
+        thisScene.modScene = false;
+      }
+    }
+
+    thisScene.autoAdvanceMediaTime = nextScene ? nextScene.startTime : null;
+    thisScene.autoAdvanceMediaId = this.mainAudio.id;
+  }
+
+  // add blank scene at end
+  let tailScene = {
+    layout: [
+      { zone: 1, span: 12, contentType: 'html', content: '<div></div>'}
+    ],
+    backgroundColor: this.fadeColor,
+    autoAdvanceTime: this.gapTime
+  }
+
+  this.scenes.push(tailScene);
+}
+
+
+Storyspace.prototype.setRootStyles = function() {
+  // if (this.config.backgroundColor) {
+  //   this.root.style.background = this.config.backgroundColor;
+  // }
+
+  if (this.config.fontColor) {
+    this.root.style.color = this.config.fontColor;
+  }
+}
+
+
 Storyspace.prototype.initializeZoneWrappers = function() {
   // Delete everything in this.root first
   removeAllChildNodes(this.root);
-  this.zoneWrappers = this.root.querySelectorAll('.zone-wrapper');
   this.zoneWrapperTop = htmlToElement('<div class="zone-wrapper to-fade-in" id="zone-wrapper-1"></div>');
   this.zoneWrapperNext = htmlToElement('<div class="zone-wrapper to-fade-in" id="zone-wrapper-2"></div>');
   this.root.appendChild(this.zoneWrapperTop);
@@ -147,39 +194,6 @@ Storyspace.prototype.initializeScenes = function() {
 }
 
 
-Storyspace.prototype.processScenes = function() {
-  this.scenes.forEach(function(scene) {
-    if (!scene.startTime) {
-      scene.startTime = 0;
-    }
-  });
-
-  function sceneSort(a, b) {
-    return a.startTime - b.startTime;
-  }
-
-  this.scenes = this.scenes.sort(sceneSort);
-
-  for (let i = 0; i < this.scenes.length; i++) {
-    let thisScene = this.scenes[i];
-    let nextScene = this.scenes[i + 1];
-    thisScene.autoAdvanceMediaTime = nextScene ? nextScene.startTime : null;
-    thisScene.autoAdvanceMediaId = this.mainAudio.id;
-  }
-
-  // add blank scene at end
-  let tailScene = {
-    layout: [
-      { zone: 1, span: 12, contentType: 'html', content: '<div></div>'}
-    ],
-    backgroundColor: this.fadeColor,
-    autoAdvanceTime: this.gapTime
-  }
-
-  this.scenes.push(tailScene);
-}
-
-
 // Presentation control
 
 Storyspace.prototype.incrementSceneIndex = function() {
@@ -189,13 +203,11 @@ Storyspace.prototype.incrementSceneIndex = function() {
     // setting this.sceneIndex = null here triggers restart at the end of the story
     this.sceneIndex = null;
   }
-  console.log(this.sceneIndex);
 }
 
 
 Storyspace.prototype.loadNext = function() {
   this.restartOnAdvance = (this.sceneIndex === null) ? true : false;
-  console.log(this.restartOnAdvance);
   if (!this.restartOnAdvance) {
     var scene = this.scenes[this.sceneIndex];
     this.initializeLayout(this.zoneWrapperNext, scene);
@@ -210,12 +222,9 @@ Storyspace.prototype.loadPrev = function() {
   // At this point the next scene has already been loaded, and this.sceneIndex has been incremented to the one after
   // That means that this.sceneIndex is 2 past the current scene's index
   // So to load the previous one, you need to set that number back by 3
-  var indexMinus2 = modulo((this.sceneIndex - 3), this.scenes.length);
+  let indexMinus2 = modulo((this.sceneIndex - 3), this.scenes.length);
   this.sceneIndex = (indexMinus2 >= 0) ? indexMinus2 : ((this.scenes.length - 1) + indexMinus2);
-  
-  // console.log("loadPrev " + this.sceneIndex);
-
-  var scene = this.scenes[this.sceneIndex];
+  let scene = this.scenes[this.sceneIndex];
   this.initializeLayout(this.zoneWrapperNext, scene);
   this.loadContent(this.zoneWrapperNext, scene);
   this.nextScene = scene;
@@ -225,7 +234,6 @@ Storyspace.prototype.loadPrev = function() {
 
 Storyspace.prototype.start = function() {
   var _this = this;
-  // this.loadNext();
   this.restartChildVideoPlayers(this.zoneWrapperTop);
   this.transitioning = true;
 
@@ -240,7 +248,6 @@ Storyspace.prototype.start = function() {
   this.startQueuedSlideshows();
   
   if (this.mainAudio) {
-    // console.log(this.mainAudio);
     this.playPause(this.mainAudio);
   }
 
@@ -254,13 +261,8 @@ Storyspace.prototype.advance = function(options) {
   options ||= {};
   var skip = options.skip || false;
   var back = options.back || false;
-
-  console.log('advance');
-  console.log(this.sceneIndex);
-
   this.transitioning = true;
   var _this = this;
-
   let transitionInterval = this.transitionInterval;
 
   if (this.nextScene.transitionInterval === 0) {
@@ -277,8 +279,7 @@ Storyspace.prototype.advance = function(options) {
   this.restartChildVideoPlayers(this.zoneWrapperNext);
 
   if (skip) {
-    console.log('skip');
-    console.log(this.nextScene.startTime);
+    console.log('skip -> ' + this.nextScene.startTime);
     
     if (this.mediaTimeAdvanceInterval) {
       clearInterval(this.mediaTimeAdvanceInterval);
@@ -298,26 +299,74 @@ Storyspace.prototype.advance = function(options) {
   }
 
   fadeIn(this.zoneWrapperNext, transitionInterval, function() {
-    var newNext = _this.zoneWrapperTop;
-    var newTop = _this.zoneWrapperNext;
+    let oldTop = _this.zoneWrapperTop;
+    let newNext = oldTop;
+    let newTop = _this.zoneWrapperNext;
+
+    if (newTop.hasAttribute('data-modscene')) {
+      _this.finalizeModScene(newTop, oldTop);
+    }
+
     _this.zoneWrapperTop = newTop;
     _this.zoneWrapperNext = newNext;
-
-    //
     _this.zoneWrapperNext.style.opacity = 0;
     _this.zoneWrapperNext.style.zIndex = 1000;
     _this.zoneWrapperTop.style.zIndex = 0;
-    //
-
     _this.transitioning = false;
-
+    
     if (!_this.restartOnAdvance) {
       _this.loadNext();
     }
-    
+
     _this.checkElementAutoAdvance(newTop);
   });
+
   this.startQueuedSlideshows();
+}
+
+
+Storyspace.prototype.finalizeModScene = function(targetZoneWrapper, sourceZoneWrapper) {
+  var _this = this;
+  var emptyTargetZones = targetZoneWrapper.querySelectorAll('.zone.empty');
+
+  emptyTargetZones.forEach(zone => {
+    // let targetSpan = zoneSpanFromElement(zone);
+    let zoneNum = zoneNumberFromElement(zone);
+    let sourceZone = sourceZoneWrapper.querySelector('.zone-' + zoneNum);
+
+    if (sourceZone) {
+      let sourceWrapper = sourceZone.querySelector('.wrapper');
+      let sourceSpan = zoneSpanFromElement(sourceZone);
+
+      if (sourceSpan == 1) {
+        if (sourceWrapper) {
+          zone.appendChild(sourceWrapper);
+        }
+      }
+      else {
+        let allowSpan = true;
+        let emptyZoneNums = Array.from(emptyTargetZones).map(z => zoneNumberFromElement(z));
+
+        for (let i = 1; i < sourceSpan; i++) {
+          let testZone = zoneNum + 1;
+
+          if (!emptyZoneNums.includes(testZone)) {
+            allowSpan = false;
+            break;
+          }
+
+        }
+
+        if (allowSpan) {
+          zone.classList.add('span-' + sourceSpan);
+
+          if (sourceWrapper) {
+            zone.appendChild(sourceWrapper);
+          }
+        }
+      }
+    }
+  });
 }
 
 
@@ -377,26 +426,32 @@ Storyspace.prototype.enableKeyboardConrol = function() {
 // Scene controls
 
 Storyspace.prototype.initializeLayout = function(zoneWrapper, scene) {
-  var layout = scene.layout;
-
-  layout = layout.sort(function(a,b) { return a.zone - b.zone });
+  var layout = scene.layout.sort(function(a,b) { return a.zone - b.zone });
   
-  // TODO: Support modification scenes (replace content in specific zones rather than replacing the entire scene)
+  // For scenes with modScene = true, add empty zones that will be filled with content from previous scene
+  if (scene.modScene) {
+    let emptyZones = this.getEmptyZones(scene);
+    for (let i=0; i < emptyZones.length; i++) {
+      layout.push( { zone: emptyZones[i], empty: true } )
+    }
+  }
+
   removeAllChildNodes(zoneWrapper);
 
   if (!scene.grid) {
     scene.grid = this.defaultGrid;
   }
 
-  if (scene.backgroundColor) {
-    zoneWrapper.style.backgroundColor = scene.backgroundColor;
-  }
-  else if (this.config.backgroundColor) {
-    zoneWrapper.style.background = this.config.backgroundColor;
-  }
-  else {
+  if (scene.modScene) {
     zoneWrapper.style.backgroundColor = null;
   }
+  else if (scene.backgroundColor) {
+    zoneWrapper.style.backgroundColor = scene.backgroundColor;
+  }
+  else {
+    zoneWrapper.style.backgroundColor = this.backgroundColor;
+  }
+
 
   if (scene.backgroundImage) {
     zoneWrapper.style.backgroundImage = "url('" + scene.backgroundImage + "')";
@@ -416,16 +471,52 @@ Storyspace.prototype.initializeLayout = function(zoneWrapper, scene) {
     let zoneConf = layout[i];
     let zoneId = "zone-" + zoneConf.zone;
     let zoneClasses = ['zone', zoneId];
+
     if (zoneConf.span) {
       zoneClasses.push("span-" + zoneConf.span);
     }
+    
+    if (zoneConf.empty) {
+      zoneClasses.push('empty');
+    }
+
     let zone = generateElement('div', zoneClasses);
-    // zone.id = zoneId;
-    let wrapper = generateElement('div', 'wrapper');
-    zone.appendChild(wrapper);
+
+    if (!zoneConf.empty) {
+      let wrapper = generateElement('div', 'wrapper');
+      zone.appendChild(wrapper);
+    }
+
     zoneWrapper.appendChild(zone);
   }
 }
+
+
+Storyspace.prototype.getEmptyZones = function(scene) {
+  var emptyZones = [];
+  let layout = scene.layout.sort(function(a,b) { return a.zone - b.zone });
+  let zoneCount = parseInt(scene.grid);
+  let occupiedZones = [];
+
+  for (let i = 0; i < layout.length; i++) {
+    let zoneConf = layout[i];
+    let zone = zoneConf.zone;
+    let span = zoneConf.span || 1;
+    occupiedZones.push(zone);
+    for (let ii = 1; ii < span; ii++) {
+      occupiedZones.push(zone + ii)
+    }
+  }
+
+  for (let i = 1; i <= zoneCount; i++) {
+    if (!occupiedZones.includes(i)) {
+      emptyZones.push(i)
+    }
+  }
+
+  return emptyZones;
+}
+
 
 Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
   var layout = scene.layout;
@@ -445,6 +536,10 @@ Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
     }
   }
 
+  if (scene.modScene) {
+    zoneWrapper.setAttribute('data-modscene', 'true');
+  }
+
   var imgHtml = '<img src="">';
   var videoHtml = '<video src="" class="paused"></video>';
   var divHtml = '<div class="zone-content-html"></div>';
@@ -457,8 +552,8 @@ Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
     var zone = zoneWrapper.querySelector(zoneSelector);
 
     if (zone) {
-      var wrapper = zone.querySelector('.wrapper');
-      var el;
+      let wrapper = zone.querySelector('.wrapper');
+      let el;
 
       switch (zoneConf.contentType) {
       case 'video':
@@ -530,9 +625,6 @@ Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
 // Scene auto-advance controls 
 
 Storyspace.prototype.checkElementAutoAdvance = function(element) {
-
-  // console.log(element);
-
   if (element.hasAttribute('data-auto-advance-time')) {
     let time = parseFloat(element.getAttribute('data-auto-advance-time'));
 
@@ -571,13 +663,8 @@ Storyspace.prototype.advanceOrRestart = function() {
 
 
 Storyspace.prototype.mediaTimeAdvance = function(mediaObject, time) {
-  // console.log('mediaTimeAdvance');
-  // console.log(mediaObject);
-
   var _this = this;
-
   time = time / 1000;
-  // console.log(time);
  
   this.mediaTimeAdvanceInterval = setInterval(function() {
     if (mediaObject.currentTime >= time) {
@@ -639,27 +726,26 @@ Storyspace.prototype.startQueuedSlideshows = function() {
 
 Storyspace.prototype.playPause = function(element) {
   var players;
-  
-  console.log('playPause. element:');
-  console.log(element ? element : 'NULL');
 
   if (element) {
-
     let name = element.tagName.toLowerCase();
+
     if (name == 'audio' || element.tagName == 'video') {
-      // console.log(element);
       players = [element];
     }
     else {
       players = element.querySelectorAll('video,audio');
     }
+
   }
   else {
     players = this.zoneWrapperTop.querySelectorAll('video,audio');
     players = Array.prototype.slice.call(players);
+
     if (this.mainAudio) {
       players.push(this.mainAudio);
     }
+
   }
 
   players.forEach(function(player) {

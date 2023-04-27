@@ -164,3 +164,32 @@ function precise(number, precision) {
   let p = Math.floor(precision);
   return Number.parseFloat(number).toPrecision(p);
 }
+
+
+// Domain specific element methods
+
+function zoneSpanFromElement(el) {
+  let span = 1;
+  for (i = 0; i < el.classList.length; i++) {
+    let testClass = el.classList[i];
+    if (testClass.match(/span\-\d+$/)) {
+      span = parseInt(testClass.replace('span-', ''));
+      break;
+    }
+  }
+  return span;
+}
+
+
+function zoneNumberFromElement(el) {
+  let zone;
+  for (i = 0; i < el.classList.length; i++) {
+    let testClass = el.classList[i];
+    if (testClass.match(/zone\-\d+$/)) {
+      zone = parseInt(testClass.replace('zone-', ''));
+      break;
+    }
+  }
+  return zone;
+}
+
