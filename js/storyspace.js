@@ -74,6 +74,8 @@ Storyspace.prototype.setDefaults = function() {
     this.transitionInterval = this.config.transitionInterval || 1000;
   }
 
+  this.fadeInInterval = this.config.fadeInInterval || this.transitionInterval;
+
   let minGap = this.transitionInterval / 1000;
 
   if (this.config.gapTime && this.config.gapTime >= minGap) {
@@ -237,7 +239,7 @@ Storyspace.prototype.start = function() {
   this.restartChildVideoPlayers(this.zoneWrapperTop);
   this.transitioning = true;
 
-  fadeIn(this.zoneWrapperTop, this.transitionInterval, function() {
+  fadeIn(this.zoneWrapperTop, this.fadeInInterval, function() {
     let top = _this.zoneWrapperTop;
     top.classList.remove('to-fade-in');
     _this.transitioning = false;
