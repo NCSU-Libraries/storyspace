@@ -141,6 +141,8 @@ Storyspace.prototype.processScenes = function() {
       if (!prevScene || thisScene.grid != prevScene.grid) {
         thisScene.modScene = false;
       }
+
+
     }
 
     thisScene.autoAdvanceMediaTime = nextScene ? nextScene.startTime : null;
@@ -221,12 +223,20 @@ Storyspace.prototype.loadNext = function() {
 
 
 Storyspace.prototype.loadPrev = function() {
-  // At this point the next scene has already been loaded, and this.sceneIndex has been incremented to the one after
+  // At this point the next scene has already been loaded, and this.sceneIndex has been incremented to the one after that
   // That means that this.sceneIndex is 2 past the current scene's index
   // So to load the previous one, you need to set that number back by 3
   let indexMinus2 = modulo((this.sceneIndex - 3), this.scenes.length);
   this.sceneIndex = (indexMinus2 >= 0) ? indexMinus2 : ((this.scenes.length - 1) + indexMinus2);
   let scene = this.scenes[this.sceneIndex];
+
+  // Skip modScenes when going backward
+  while (scene.modScene) {
+    let indexMinusX = modulo((this.sceneIndex - 1), this.scenes.length);
+    this.sceneIndex = (indexMinusX >= 0) ? indexMinusX : ((this.scenes.length - 1) + indexMinusX);
+    scene = this.scenes[this.sceneIndex];
+  }
+
   this.initializeLayout(this.zoneWrapperNext, scene);
   this.loadContent(this.zoneWrapperNext, scene);
   this.nextScene = scene;
@@ -238,6 +248,8 @@ Storyspace.prototype.start = function() {
   var _this = this;
   this.restartChildVideoPlayers(this.zoneWrapperTop);
   this.transitioning = true;
+  
+  console.log(this.fadeInInterval);
 
   fadeIn(this.zoneWrapperTop, this.fadeInInterval, function() {
     let top = _this.zoneWrapperTop;
@@ -375,7 +387,7 @@ Storyspace.prototype.finalizeModScene = function(targetZoneWrapper, sourceZoneWr
 Storyspace.prototype.reverse = function() {
   console.log('reverse');
   this.loadPrev();
-  this.advance({skip: true});
+  this.advanceOrRestart({skip: true});
 }
 
 
@@ -653,13 +665,13 @@ Storyspace.prototype.checkElementAutoAdvance = function(element) {
 }
 
 
-Storyspace.prototype.advanceOrRestart = function() {
+Storyspace.prototype.advanceOrRestart = function(options) {
   if (this.restartOnAdvance) {
     this.restartOnAdvance = false;
     this.restart();
   }
   else {
-    this.advance();
+    this.advance(options);
   }
 }
 
