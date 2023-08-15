@@ -13,3 +13,7 @@ A simple demo presentation is included in this repository
 7. Press N to move to the next scene, or B to move back to the previous scene.
 
 *\* It should also work in other browsers but is only consistently tested in Chrome*
+
+## How to create a presentation
+
+> COMING SOON!!!
