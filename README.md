@@ -14,6 +14,6 @@ A simple demo presentation is included in this repository
 
 *\* It should also work in other browsers but is only consistently tested in Chrome*
 
-## How to create a presentation
+## How to create a story
 
 > COMING SOON!!!
