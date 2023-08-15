@@ -1,5 +1,5 @@
 # Storyspace
-A framework for visual storytelling in immersive visualization spaces
+A framework for audiovisual storytelling in immersive visualization spaces
 
 ## Demo presentation
 
