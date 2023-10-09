@@ -397,47 +397,6 @@ Storyspace.prototype.reverse = function() {
 }
 
 
-// Event handler for keyboard control
-// Storyspace.prototype.keyboardControlMapping = function(event) {
-//   var _this = this;
-//   var keyCode = event.keyCode;
-
-//   // s for start
-//   if (!_this.started) {
-//     _this.start();
-//   }
-//   else if (_this.started) {
-//     switch(keyCode) {
-//       // spacebar
-//       case 32:
-//         _this.playPause();
-//         console.log('spacebar');
-//         break;
-//       // n
-//       case 78:
-//         if (!_this.transitioning) {
-//           _this.advance({skip: true});
-//         }
-//       // b
-//       case 66:
-//         if (!_this.transitioning) {
-//           _this.reverse();
-//         }
-//         break;
-//       // p
-//       case 80:
-//         break;
-//       // arrow right
-//       case 39:
-//         break;
-//       // arrow left
-//       case 37:
-//         break;
-//     }
-//   }
-// }
-
-
 Storyspace.prototype.enableKeyboardConrol = function() {
   var _this = this;
 
