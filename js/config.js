@@ -2,25 +2,25 @@ function config() {
   var conf = new StoryspaceConfig();
 
 // *** No edits above here ***  
-  // Set transition interval (fade time) in MILLISECONDS
+  // // Set transition interval (fade time) in MILLISECONDS (default: 500)
   // conf.transitionInterval = 500;
 
-  // Set default grid
-  // conf.defaultGrid = 12;
+  // // Set default grid
+  // conf.defaultGrid = 8;
 
-  // Specify if media content should loop
+  // // Specify if media content should loop
   // conf.loopMedia = true;
 
-  // Set gap time (between story end and restart or next story) in SECONDS
+  // // Set gap time (between story end and restart or next story) in SECONDS
   // conf.gapTime = 2;
 
-  // Set default background color
+  // // Set default background color
   // conf.backgroundColor = '#000';
 
-  // Specify path to audio file
+  // // Specify path to audio file
   // conf.audioFilePath = 'media/audio/demo/fivetones.mp3';
 
-  // Define sceenes here via conf.addScene() – see README for instructions (TK)
+  // Define scenes here via conf.addScene() – see README for instructions (TK)
 
   // conf.addScene({
   //   layout: [

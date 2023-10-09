@@ -63,7 +63,7 @@ Storyspace.prototype.setDefaults = function() {
   this.zoneWrapperTopIndex = 0;
   this.zoneWrapperNextIndex = 1;
   this.grids = [12,10,8];
-  this.defaultGrid = this.config.defaultGrid || null; // null default will use 12-zone grid
+  this.defaultGrid = this.config.defaultGrid || 8; // null default will use 12-zone grid
   this.loopMedia = (this.config.loopMedia !== false) ? true : false;
   this.queuedSlideshows = [];
   this.backgroundColor = this.config.backgroundColor || '#000';
@@ -71,7 +71,7 @@ Storyspace.prototype.setDefaults = function() {
     this.transitionInterval = 0;
   }
   else {
-    this.transitionInterval = this.config.transitionInterval || 1000;
+    this.transitionInterval = this.config.transitionInterval || 300;
   }
 
   this.fadeInInterval = this.config.fadeInInterval || this.transitionInterval;
@@ -101,12 +101,18 @@ Storyspace.prototype.setDefaults = function() {
 
 Storyspace.prototype.initializeMainAudio = function() {
   this.mainAudio = null;
+  let mainAudioId = this.config.mainAudioId || 'main-audio-element';
+  let oldAudio = document.getElementById(mainAudioId);
+  if (oldAudio) {
+    console.log(oldAudio);
+    oldAudio.remove();
+  }
 
   if (this.config.audioFilePath) {
     this.mainAudioWrapper = document.querySelector("#main-audio");
     let audioElementHtml = '<audio src="' + this.config.audioFilePath + '" class="paused">';
     this.mainAudio = htmlToElement(audioElementHtml);
-    this.mainAudio.id = this.config.mainAudioId || 'main-audio-element';
+    this.mainAudio.id = mainAudioId;
     this.mainAudioWrapper.appendChild(this.mainAudio);
   }
 }
@@ -307,7 +313,7 @@ Storyspace.prototype.advance = function(options) {
   let currentSceneIndex = modulo(this.sceneIndex - 1, this.scenes.length);
 
   if (currentSceneIndex == 0) {
-    pause(this.mainAudio);
+    // pause(this.mainAudio);
     this.mainAudio.currentTime = 0;
     play(this.mainAudio);
   }
@@ -391,10 +397,51 @@ Storyspace.prototype.reverse = function() {
 }
 
 
+// Event handler for keyboard control
+// Storyspace.prototype.keyboardControlMapping = function(event) {
+//   var _this = this;
+//   var keyCode = event.keyCode;
+
+//   // s for start
+//   if (!_this.started) {
+//     _this.start();
+//   }
+//   else if (_this.started) {
+//     switch(keyCode) {
+//       // spacebar
+//       case 32:
+//         _this.playPause();
+//         console.log('spacebar');
+//         break;
+//       // n
+//       case 78:
+//         if (!_this.transitioning) {
+//           _this.advance({skip: true});
+//         }
+//       // b
+//       case 66:
+//         if (!_this.transitioning) {
+//           _this.reverse();
+//         }
+//         break;
+//       // p
+//       case 80:
+//         break;
+//       // arrow right
+//       case 39:
+//         break;
+//       // arrow left
+//       case 37:
+//         break;
+//     }
+//   }
+// }
+
+
 Storyspace.prototype.enableKeyboardConrol = function() {
   var _this = this;
 
-  var keyboardControlMapping = function(event) {
+  this.keyboardControlMapping ||= function(event) {
     // var _this = this;
     var keyCode = event.keyCode;
     // s for start
@@ -432,8 +479,8 @@ Storyspace.prototype.enableKeyboardConrol = function() {
     }
   }
 
-  document.removeEventListener('keydown', keyboardControlMapping);
-  document.addEventListener('keydown', keyboardControlMapping);
+  document.removeEventListener('keydown', this.keyboardControlMapping);
+  document.addEventListener('keydown', this.keyboardControlMapping);
 }
 
 
@@ -753,13 +800,12 @@ Storyspace.prototype.playPause = function(element) {
 
   }
   else {
-    players = this.zoneWrapperTop.querySelectorAll('video,audio');
+    players = this.zoneWrapperTop.querySelectorAll('video');
     players = Array.prototype.slice.call(players);
 
     if (this.mainAudio) {
       players.push(this.mainAudio);
     }
-
   }
 
   players.forEach(function(player) {

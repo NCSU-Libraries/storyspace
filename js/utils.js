@@ -13,7 +13,7 @@ function fadeOut(element, duration, callback) {
 
 function fade(direction, element, duration, callback) {
   direction = (direction == 'in') ? 'in' : 'out';
-  var opacityInterval = 0.05;
+  var opacityInterval = 0.034;
 
   if (duration !== 0) {
     duration ||= 1000;

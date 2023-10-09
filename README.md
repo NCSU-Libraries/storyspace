@@ -1,4 +1,5 @@
 # Storyspace
+
 A framework for audiovisual storytelling in immersive visualization spaces
 
 ## Demo presentation
@@ -16,4 +17,23 @@ A simple demo presentation is included in this repository
 
 ## How to create a story
 
-> COMING SOON!!!
+> NOTE: Storyspace is currently optimized for use in the Cyma Rubin Visualization Gallery at the D.H. Hill Jr. Library.
+
+### Basic concepts
+
+* A story has 2 primary components:
+
+    1. An audio recording, typically combing narration, music and/or sound from various sources
+    2. A series of **scenes** that advance at specified points in time in sync with the audio
+
+* A scene is a set of elements displayed at the same time in different positions around the room, according to a prescribed layout. Elements can be images, video, or native web content (HTML + Javascript + CSS).
+
+* Layouts are defined using a grid system that divides the room into **zones** of equal widths.
+The default grid for Storyspace divides the room into 8 zones. 10- and 12-zone grids are optionally available. Zones can be combined to create more complex layouts (see **Advanced layouts** below)
+
+* The layout and content of each scene is defined via a Javascript configuration file.
+
+
+### The Javascript configuation file
+
+
