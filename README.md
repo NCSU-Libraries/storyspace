@@ -1,6 +1,6 @@
 # Storyspace
 
-A framework for audiovisual storytelling in immersive visualization spaces
+A framework for audiovisual storytelling in the Cyma Rubin Visualization Gallery at the D.H. Hill Jr. Library.
 
 ## Demo presentation
 
@@ -14,11 +14,7 @@ A simple demo presentation is included in this repository
 
 *\* It should also work in other browsers but is only consistently tested in Chrome*
 
-## How to create a story
-
-> NOTE: Storyspace is currently optimized for use in the Cyma Rubin Visualization Gallery at the D.H. Hill Jr. Library.
-
-### Basic concepts
+## Basic concepts
 
 * A story has 2 primary components:
 
@@ -32,7 +28,8 @@ The default grid for Storyspace divides the room into 8 zones. 10- and 12-zone g
 
 * The layout and content of each scene is defined via a Javascript configuration file.
 
+### DRAFT documentation
 
-### The Javascript configuation file
+Full documentation is currently in progress. See [this Google doc](https://docs.google.com/document/d/1QAem5YvCSl2PKYcuBwOGnOxyOwtmvYhQuTan3kPwALs/edit?usp=sharing) for the current version.
 
 
