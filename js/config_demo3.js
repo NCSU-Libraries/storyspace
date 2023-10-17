@@ -11,15 +11,12 @@ function config() {
   // Scene 1 does not specify startTime because it's the first scene and starts at 0
   conf.addScene({
     layout: [
-      { zone: 1, contentType: 'image', filePath: 'media/images/demo/flowers.png' },
       { zone: 2, contentType: 'image', filePath: 'media/images/demo/demo1.png' },
-      { zone: 3, contentType: 'video', filePath: 'media/video/demo/teddy.mp4' },
       { zone: 4, contentType: 'image', filePath: 'media/images/demo/demo1.png' },
-      { zone: 5, contentType: 'image', filePath: 'media/images/demo/flowers.png' },
       { zone: 6, contentType: 'image', filePath: 'media/images/demo/demo1.png' },
-      { zone: 7, contentType: 'video', filePath: 'media/video/demo/teddy.mp4' },
       { zone: 8, contentType: 'image', filePath: 'media/images/demo/demo1.png' }
-    ]
+    ],
+    backgroundColor: '#cc0000'
   })
 
 
@@ -27,28 +24,25 @@ function config() {
   conf.addScene({
     layout: [
       { zone: 1, contentType: 'image', filePath: 'media/images/demo/demo2.png' },
-      { zone: 2, contentType: 'image', filePath: 'media/images/demo/prarie.png' },
       { zone: 3, contentType: 'image', filePath: 'media/images/demo/demo2.png' },
-      { zone: 4, contentType: 'image', filePath: 'media/images/demo/fly.png' },
       { zone: 5, contentType: 'image', filePath: 'media/images/demo/demo2.png' },
-      { zone: 6, contentType: 'image', filePath: 'media/images/demo/prarie.png' },
-      { zone: 7, contentType: 'image', filePath: 'media/images/demo/demo2.png' },
-      { zone: 8, contentType: 'image', filePath: 'media/images/demo/fly.png' }
+      { zone: 7, contentType: 'image', filePath: 'media/images/demo/demo2.png' }
     ],
-    startTime: 3.875
+    startTime: 3.875,
+    backgroundColor: '#00cc00'
   })
 
 
   // Scene 3 starts at 7.875 seconds
   conf.addScene({
     layout: [
-      { zone: 1, contentType: 'image', filePath: 'media/images/demo/tundra.png' },
+      { zone: 1, backgroundColor: '#00cc00' },
       { zone: 2, contentType: 'image', filePath: 'media/images/demo/demo3.png' },
-      { zone: 3, contentType: 'video', filePath: 'media/video/demo/pearl.mp4' },
+      { zone: 3, backgroundColor: '#0000cc' },
       { zone: 4, contentType: 'image', filePath: 'media/images/demo/demo3.png' },
-      { zone: 5, contentType: 'image', filePath: 'media/images/demo/tundra.png' },
+      { zone: 5, backgroundColor: '#003300' },
       { zone: 6, contentType: 'image', filePath: 'media/images/demo/demo3.png' },
-      { zone: 7, contentType: 'video', filePath: 'media/video/demo/pearl.mp4' },
+      { zone: 7, backgroundColor: '#cc0000' },
       { zone: 8, contentType: 'image', filePath: 'media/images/demo/demo3.png' }
     ],
     startTime: 7.875
