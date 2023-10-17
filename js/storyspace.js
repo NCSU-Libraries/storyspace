@@ -566,7 +566,7 @@ Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
 
   for (var i = 0; i < layout.length; i++) {
     var zoneConf = layout[i];
-    zoneConf.loop ||= this.loopMedia;
+    zoneConf.loopMedia ||= this.loopMedia;
     var zoneId = "zone-" + zoneConf.zone;
     var zoneSelector = '.zone.' + zoneId;
     var zone = zoneWrapper.querySelector(zoneSelector);
@@ -580,7 +580,7 @@ Storyspace.prototype.loadContent = function(zoneWrapper, scene) {
         el = htmlToElement(videoHtml);
         el.src = zoneConf.filePath;
         
-        if (zoneConf.loop !== false) {
+        if (zoneConf.loopMedia !== false) {
           el.setAttribute('loop','loop');
         }
 
