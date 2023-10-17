@@ -36,7 +36,7 @@ function config() {
       { zone: 5, contentType: 'image', filePath: 'media/images/demo/demo2.png' },
       { zone: 7, contentType: 'image', filePath: 'media/images/demo/demo2.png' }
     ],
-    startTime: 3.875,
+    startTime: 3.875
   })
 
 

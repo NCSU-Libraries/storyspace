@@ -30,11 +30,12 @@ function config() {
 
   
 
-  // ** SECTION 2: SCENES **
+  // ** SECTION 2: SCENE DEFINITIONS **
 
   // Define scenes here via conf.addScene()
-  // Copy the examples below to get started
+  // Copy from the examples below to get started
   // Note that it does not include
+
 
   // This scene alternates between a video and an image
   /*
@@ -52,19 +53,37 @@ function config() {
   })
   */
 
-  // This scene alternates between a video and an image
+
+  // This scene alternates between an image and empty zones of different colors, and starts at 10 seconds
   /*
   conf.addScene({
     layout: [
       { zone: 1, contentType: 'image', filePath: 'media/images/demo/demo1.png' },
-      { zone: 2, contentType: 'video', filePath: 'media/video/demo/turnstile.mp4' },
+      { zone: 2, backgroundColor: '#D14905' },
       { zone: 3, contentType: 'image', filePath: 'media/images/demo/demo1.png' },
-      { zone: 4, contentType: 'video', filePath: 'media/video/demo/turnstile.mp4' },
+      { zone: 4, backgroundColor: '#FAC800'},
       { zone: 5, contentType: 'image', filePath: 'media/images/demo/demo1.png' },
-      { zone: 6, contentType: 'video', filePath: 'media/video/demo/turnstile.mp4' },
+      { zone: 6, backgroundColor: '#6F7D1C' },
       { zone: 7, contentType: 'image', filePath: 'media/images/demo/demo1.png' },
-      { zone: 8, contentType: 'video', filePath: 'media/video/demo/turnstile.mp4' }
+      { zone: 8, backgroundColor: '#008473' }
     ],
+    startTime: 10
+  })
+  */
+
+
+  // This scene has modScene: true set. It will replace the contents of zones 2,4,6 and 8 only,
+  //   leaving the rest of the content from the previous scene
+  /*
+  conf.addScene({
+    modScene: true,
+    layout: [
+      { zone: 2, contentType: 'image', filePath: 'media/images/demo/fly.png' },
+      { zone: 4, contentType: 'image', filePath: 'media/images/demo/fly.png' },
+      { zone: 6, contentType: 'image', filePath: 'media/images/demo/fly.png' },
+      { zone: 8, contentType: 'image', filePath: 'media/images/demo/fly.png' }
+    ],
+    startTime: 12
   })
   */
 
