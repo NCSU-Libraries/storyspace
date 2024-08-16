@@ -6,11 +6,11 @@ A framework for audiovisual storytelling in the Cyma Rubin Visualization Gallery
 
 A simple demo presentation is included in this repository
 
-1. Download or clone this Github repo.
+1. Download or clone this repo.
 3. Open Google Chrome.*
 4. Press F11 to enter full screen mode.
-5. Open the file **demo.html** in Chrome.
-6. Press any key to begin the presentation. Note that the display will scale down to fit your display, so things will look small.
+5. Open the file **demo.html**.
+6. Press any key to begin the presentation. The content will scale down to fit your display, so things will look small.
 
 *\* It should also work in other browsers but is only consistently tested in Chrome*
 
